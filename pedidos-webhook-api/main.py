@@ -1,26 +1,14 @@
 from flask import Flask, jsonify, request
-import json
 
 app = Flask(__name__)
 
 
-@app.route("/webhookpagamento", methods=["POST"])
-def hookPagamento():
-    response = {"status": 200}
-    return jsonify(response)
-
-
-@app.route("/webhookqrcode", methods=["POST"])
+@app.route("/whqrcode", methods=["POST"])
 def hookQrcode():
-    qrcode = request.json
-    if not qrcode or qrcode == "":
-        print('Not QRcode.')
-        response = {"status": 500}
-        return jsonify(response)
-    else:
-        # print("RQCODE: "+qrcode)
-        response = {"status": 200, "push-webhook": "OK"}
-        return jsonify(response)
+    qrcode = request.get_json(force=True)
+    print(qrcode)
+    response = {"status": 200, "push-qrcode": "OK"}
+    return jsonify(response)
 
 
 @app.route("/health-check", methods=["GET"])
@@ -33,4 +21,4 @@ def healthcheck():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
