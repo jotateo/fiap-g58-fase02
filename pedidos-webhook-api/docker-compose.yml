@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  webhook-db:
+    image: postgres:15-alpine
+    restart: always
+    ports:
+      - "5447:5432"
+    environment:
+      POSTGRES_USER: webhook-api
+      POSTGRES_PASSWORD: /run/secrets/db_pass
+      POSTGRES_DB: webhook-api
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - api-net
+    secrets:
+      - db_pass
+
+  adminer:
+    image: adminer:4.8.1
+    restart: always
+    ports:
+      - "8054:8080"
+    networks:
+      - api-net
+
+  webhook-api:
+    build: .
+    restart: always
+    ports:
+      - 5000:5000
+    networks:
+      - api-net
+
+networks:
+  api-net:
+    driver: bridge
+
+secrets:
+  db_pass:
+    file: db_pass.txt
+
+volumes:
+  postgres_data: {}
