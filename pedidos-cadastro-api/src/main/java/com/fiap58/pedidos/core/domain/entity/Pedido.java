@@ -2,6 +2,7 @@ package com.fiap58.pedidos.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,6 +39,10 @@ public class Pedido {
     @Column(name = "DATA_FINALIZADO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataFinalizado;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status;
 
     public Pedido(Long idPedido, Cliente cliente) {
         this.idPedido = idPedido;
