@@ -1,11 +1,14 @@
 FROM python:3.10-alpine
 
-COPY ./requirements.txt /app/requirements.txt
-COPY ./main.py /app
-
 WORKDIR /app
 
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+COPY requirements.txt /app
 
-CMD [ "python3", "main.py"]
+RUN --mount=type=cache,target=/root/.cache/pip
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
+
+COPY main.py /app
+
+ENTRYPOINT ["python3"]
+CMD [ "main.py"]
