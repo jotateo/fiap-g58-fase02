@@ -3,6 +3,7 @@ package com.fiap58.pedidos.core.domain.dto;
 import com.fiap58.pedidos.core.domain.entity.Cliente;
 import com.fiap58.pedidos.core.domain.entity.Pedido;
 import com.fiap58.pedidos.core.domain.entity.PedidoProduto;
+import com.fiap58.pedidos.core.domain.entity.StatusPedido;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,11 +18,13 @@ public class DadosPedidosDto {
     private Date dataPedido;
     private List<ProdutoCarrinho> carrinho;
     private String nomeCliente;
+    private StatusPedido status;
 
     public DadosPedidosDto(Pedido pedido, List<PedidoProduto> pedidoProdutos){
         this.dataPedido = pedido.getDataPedido();
         this.carrinho = this.retornaCarrinho(pedidoProdutos);
         this.nomeCliente = pedido.getCliente().getNome();
+        this.status = pedido.getStatus();
     }
 
     public List<ProdutoCarrinho> retornaCarrinho(List<PedidoProduto> pedidoProdutos){

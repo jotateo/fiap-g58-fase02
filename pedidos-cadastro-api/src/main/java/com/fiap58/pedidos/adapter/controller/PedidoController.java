@@ -36,5 +36,12 @@ public class PedidoController {
 
         return ResponseEntity.ok(dadosPedidosDto);
     }
+
+    @Operation(description = "Atualiza o status do Pedido")
+    @PatchMapping("/atualizar/{id}")
+    @Transactional
+    public ResponseEntity<DadosPedidosDto> atualizarStatus(@PathVariable Long id) throws Exception {
+        return ResponseEntity.ok(service.atualizarPedido(id));
+    }
 }
 
