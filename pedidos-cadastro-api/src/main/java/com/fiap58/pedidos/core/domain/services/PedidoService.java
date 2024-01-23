@@ -8,10 +8,9 @@ import com.fiap58.pedidos.core.domain.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class PedidoService {
@@ -53,12 +52,22 @@ public class PedidoService {
         List<Pedido> pedidos = this.retornarTodosPedidos();
         List<DadosPedidosDto> dadosPedidosDto = new ArrayList<>();
 
-
         for (Pedido pedido: pedidos
              ) {
             dadosPedidosDto.add(mapperDadosPedidoDto(pedido));
         }
-        return dadosPedidosDto;
+        return ordenaDadosPedidoDto(dadosPedidosDto);
+    }
+
+    private List<DadosPedidosDto>  ordenaDadosPedidoDto(List<DadosPedidosDto> listaInicial){
+
+        List<DadosPedidosDto> lista = listaInicial.stream()
+                .filter(pedidos -> !pedidos.getStatus().equals(StatusPedido.FINALIZADO))
+                .sorted(Comparator.comparing(DadosPedidosDto::getDataPedido))
+                .sorted((p1, p2) -> p2.getStatus().getValor() - p1.getStatus().getValor())
+                .collect(Collectors.toList());
+
+        return lista;
     }
 
     private DadosPedidosDto mapperDadosPedidoDto(Pedido pedido){
@@ -98,6 +107,7 @@ public class PedidoService {
             pedido.setStatus(StatusPedido.PRONTO);
         } else {
             pedido.setStatus(StatusPedido.FINALIZADO);
+            pedido.setDataFinalizado(new Date());
         }
     }
 

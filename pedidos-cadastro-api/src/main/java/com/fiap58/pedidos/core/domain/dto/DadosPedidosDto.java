@@ -15,24 +15,24 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class DadosPedidosDto {
-    private Date dataPedido;
-    private List<ProdutoCarrinho> carrinho;
+    private List<ProdutoCarrinho> produtos;
     private String nomeCliente;
+    private Date dataPedido;
     private StatusPedido status;
 
     public DadosPedidosDto(Pedido pedido, List<PedidoProduto> pedidoProdutos){
         this.dataPedido = pedido.getDataPedido();
-        this.carrinho = this.retornaCarrinho(pedidoProdutos);
+        this.produtos = this.retornaCarrinho(pedidoProdutos);
         this.nomeCliente = pedido.getCliente().getNome();
         this.status = pedido.getStatus();
     }
 
     public List<ProdutoCarrinho> retornaCarrinho(List<PedidoProduto> pedidoProdutos){
-        List<ProdutoCarrinho> carrinho = new ArrayList<>();
+        List<ProdutoCarrinho> produtos = new ArrayList<>();
         for (PedidoProduto pedidoProduto : pedidoProdutos
         ) {
-            carrinho.add(new ProdutoCarrinho(pedidoProduto));
+            produtos.add(new ProdutoCarrinho(pedidoProduto));
         }
-        return carrinho;
+        return produtos;
     }
 }
