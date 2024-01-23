@@ -42,10 +42,8 @@ public class PedidoService {
             pedidosProdutos.add(pedidoProduto);
         }
 
-        DadosPedidosDto retornoPedidoCriado = new DadosPedidosDto(pedido, pedidosProdutos);
 
-
-        return retornoPedidoCriado;
+        return new DadosPedidosDto(pedido, pedidosProdutos);
     }
 
     public List<DadosPedidosDto> listarPedidos(){

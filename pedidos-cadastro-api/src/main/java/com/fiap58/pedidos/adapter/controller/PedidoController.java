@@ -31,10 +31,10 @@ public class PedidoController {
     @PostMapping("/checkout")
 
     @Transactional
-    public ResponseEntity<DadosPedidosDto> incluirPedido(@RequestBody @Valid DadosPedidosEntrada dto){
+    public ResponseEntity<Long> incluirPedido(@RequestBody @Valid DadosPedidosEntrada dto){
         DadosPedidosDto dadosPedidosDto = service.inserirPedidoFila(dto);
 
-        return ResponseEntity.ok(dadosPedidosDto);
+        return ResponseEntity.ok(dadosPedidosDto.getId());
     }
 
     @Operation(description = "Atualiza o status do Pedido")

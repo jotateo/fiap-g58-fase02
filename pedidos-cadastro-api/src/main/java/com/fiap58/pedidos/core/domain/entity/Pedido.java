@@ -48,5 +48,6 @@ public class Pedido {
         this.idPedido = idPedido;
         this.cliente = cliente;
         this.dataPedido = new Date();
+        this.status = StatusPedido.RECEBIDO;
     }
 }
