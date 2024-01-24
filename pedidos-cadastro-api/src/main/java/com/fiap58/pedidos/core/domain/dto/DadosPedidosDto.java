@@ -17,7 +17,7 @@ public class DadosPedidosDto {
     @JsonIgnore
     private Long id;
     private List<ProdutoCarrinhoSaida> produtos;
-    private String nomeCliente;
+    private String nomeCliente = "";
     private Date dataPedido;
     private StatusPedido status;
 
@@ -25,7 +25,8 @@ public class DadosPedidosDto {
         this.id = pedido.getIdPedido();
         this.dataPedido = pedido.getDataPedido();
         this.produtos = this.retornaCarrinho(pedidoProdutos);
-        this.nomeCliente = pedido.getCliente().getNome();
+        if(pedido.getCliente() != null)
+            this.nomeCliente = pedido.getCliente().getNome();
         this.status = pedido.getStatus();
     }
 

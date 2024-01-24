@@ -19,31 +19,40 @@ public class PedidoService {
     private PedidoRepository repository;
 
     @Autowired
-    private PedidoProdutoRepository pedidoProdutoRepository;
+    private ClienteService clienteService;
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ProdutoService produtoService;
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private pedidoProdutoService pedidoProdutoService;
+
 
     public DadosPedidosDto inserirPedidoFila(DadosPedidosEntrada dto) {
-        Cliente cliente = clienteRepository.findById(dto.clienteId()).orElse(null);
+        Cliente cliente;
+        if(dto.clienteId() != null){
+            cliente = clienteService.buscarClientePorId(dto.clienteId());
+        } else {
+            cliente = null;
+        }
         Pedido pedido = new Pedido(null, cliente);
         Pedido pedidoCriado = repository.save(pedido);
+        List<PedidoProduto> pedidosProdutos = processaCarrinhoPedido(dto.carrinho(), pedidoCriado);
+        return new DadosPedidosDto(pedido, pedidosProdutos);
+    }
 
+    private List<PedidoProduto> processaCarrinhoPedido(List<ProdutoCarrinho> carrinhoProdutos,
+                                                       Pedido pedidoCriado){
         List<PedidoProduto> pedidosProdutos = new ArrayList<>();
-        for (ProdutoCarrinho carrinho : dto.carrinho()) {
-            Produto produto = produtoRepository.getReferenceById(carrinho.idProduto());
+        for (ProdutoCarrinho carrinho : carrinhoProdutos) {
+            Produto produto = produtoService.buscarProduto(carrinho.idProduto());
             PedidoProduto pedidoProduto = new PedidoProduto(null, pedidoCriado,
                     produto, carrinho.quantidade(), produto.getPrecoAtual(),
                     carrinho.observacao());
-            pedidoProdutoRepository.save(pedidoProduto);
+            pedidoProdutoService.inserirPedidoProduto(pedidoProduto);
             pedidosProdutos.add(pedidoProduto);
         }
-
-
-        return new DadosPedidosDto(pedido, pedidosProdutos);
+        return pedidosProdutos;
     }
 
     public List<DadosPedidosDto> listarPedidos(){
@@ -86,7 +95,7 @@ public class PedidoService {
     }
 
     public List<PedidoProduto> retornaTabelaJuncao(Pedido pedido){
-        return pedidoProdutoRepository.findAllByIdPedido(pedido.getIdPedido());
+        return pedidoProdutoService.retornaPedidoProduto(pedido.getIdPedido());
     }
 
     public DadosPedidosDto atualizarPedido(Long id) throws Exception {
