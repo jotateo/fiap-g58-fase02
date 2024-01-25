@@ -1,5 +1,6 @@
 package com.fiap58.pedidos.controller;
 
+import com.fiap58.pedidos.presenters.dto.entrada.DadosClienteCadastro;
 import com.fiap58.pedidos.presenters.dto.saida.DadosClienteDto;
 import com.fiap58.pedidos.core.domain.entity.Cliente;
 import com.fiap58.pedidos.core.usecase.ClienteService;
@@ -20,13 +21,13 @@ public class ClienteController {
 
     @Operation(description = "Faz a inserção de um novo cliente")
     @PostMapping("/inserir")
-    public ResponseEntity<Cliente> cadastrarCliente(@RequestBody Cliente cliente) {
-        Cliente checkCliente = service.buscarClientePorCpf(cliente.getCpf());
-        if (checkCliente != null) {
-            return ResponseEntity.status(HttpStatus.FOUND).body(checkCliente);
+    public ResponseEntity<DadosClienteDto> cadastrarCliente(@RequestBody DadosClienteCadastro cliente) {
+        DadosClienteDto dadosClienteDto = service.cadastrarCliente(cliente);
+        if(dadosClienteDto == null){
+            return ResponseEntity.status(HttpStatus.FOUND).body(service.retornaClienteCpf(cliente.cpf()));
+        } else {
+            return ResponseEntity.status(HttpStatus.CREATED).body(dadosClienteDto);
         }
-        Cliente novoCliente = service.cadastrarCliente(cliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoCliente);
     }
 
     @Operation(description = "Lista todos os clientes")
@@ -38,8 +39,8 @@ public class ClienteController {
 
     @Operation(description = "Busca um cliente por Id")
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarCliente(@PathVariable Long id) {
-        Cliente cliente = service.buscarClientePorId(id);
+    public ResponseEntity<DadosClienteDto> buscarCliente(@PathVariable Long id) {
+        DadosClienteDto cliente = service.retornaClienteId(id);
         if (cliente != null){
             return ResponseEntity.ok(cliente);
         } else {
@@ -49,8 +50,8 @@ public class ClienteController {
 
     @Operation(description = "Busca um cliente por CPF")
     @GetMapping("/cpf/{cpf}")
-    public ResponseEntity<Cliente> buscarClientePorCpf(@PathVariable String cpf) {
-        Cliente cliente = service.buscarClientePorCpf(cpf);
+    public ResponseEntity<DadosClienteDto> buscarClientePorCpf(@PathVariable String cpf) {
+        DadosClienteDto cliente = service.retornaClienteCpf(cpf);
         if (cliente != null) {
             return ResponseEntity.ok(cliente);
         } else {

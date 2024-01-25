@@ -22,18 +22,20 @@ public class ProdutoController {
 
     @Operation(description = "Busca produto por Id")
     @GetMapping("/{id}")
-    public Produto buscarProduto(@PathVariable long id) {return service.buscarProduto(id);}
+    public ResponseEntity<DadosProdutoDto> buscarProduto(@PathVariable long id) {
+        return ResponseEntity.ok(service.retornaProduto(id));
+    }
 
     @Operation(description = "Lista todos os produtos disponíveis")
     @GetMapping("/list")
-    public List<Produto> listarProdutos(){
-        return service.listarProdutos();
+    public List<DadosProdutoDto> listarProdutos(){
+        return service.retornaListaProdutos();
     }
 
     @Operation(description = "Busca produtos de uma determinada categoria")
     @GetMapping("/buscaPorCat/{nomeCategoria}")
-    public List<Produto> listarProdutosPorCategoria(@PathVariable String nomeCategoria) {
-        return service.buscarProdutoPorCategoria(nomeCategoria);
+    public List<DadosProdutoDto> listarProdutosPorCategoria(@PathVariable String nomeCategoria) {
+        return service.retornaListaProdutosCategoria(nomeCategoria);
     }
 
     @Operation(description = "Faz a inclusão de um novo produto")

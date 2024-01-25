@@ -1,6 +1,5 @@
 package com.fiap58.pedidos.core.usecase;
 
-import com.fiap58.pedidos.adapter.repository.*;
 import com.fiap58.pedidos.presenters.dto.saida.DadosPedidosDto;
 import com.fiap58.pedidos.presenters.dto.entrada.DadosPedidosEntrada;
 import com.fiap58.pedidos.presenters.dto.entrada.ProdutoCarrinho;
@@ -57,13 +56,7 @@ public class PedidoService {
 
     public List<DadosPedidosDto> listarPedidos(){
         List<Pedido> pedidos = this.retornarTodosPedidos();
-        List<DadosPedidosDto> dadosPedidosDto = new ArrayList<>();
-
-        for (Pedido pedido: pedidos
-             ) {
-            dadosPedidosDto.add(mapperDadosPedidoDto(pedido));
-        }
-        return ordenaDadosPedidoDto(dadosPedidosDto);
+        return ordenaDadosPedidoDto(pedidos.stream().map(this::mapperDadosPedidoDto).collect(Collectors.toList()));
     }
 
     private List<DadosPedidosDto>  ordenaDadosPedidoDto(List<DadosPedidosDto> listaInicial){
