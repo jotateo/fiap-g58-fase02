@@ -7,6 +7,7 @@ import com.fiap58.pedidos.core.domain.entity.StatusPedido;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ public class DadosPedidosDto {
     private Long id;
     private List<ProdutoCarrinhoSaida> produtos;
     private String nomeCliente = "";
-    private Date dataPedido;
+    private Instant dataPedido;
     private StatusPedido status;
 
     public DadosPedidosDto(Pedido pedido, List<PedidoProduto> pedidoProdutos){

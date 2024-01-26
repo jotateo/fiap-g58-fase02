@@ -5,9 +5,12 @@ import com.fiap58.pedidos.presenters.dto.entrada.DadosPedidosEntrada;
 import com.fiap58.pedidos.presenters.dto.entrada.ProdutoCarrinho;
 import com.fiap58.pedidos.core.domain.entity.*;
 import com.fiap58.pedidos.gateway.PedidoRepository;
+import com.fiap58.pedidos.presenters.dto.saida.DadosPedidosPainelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,16 +57,17 @@ public class PedidoService {
         return pedidosProdutos;
     }
 
-    public List<DadosPedidosDto> listarPedidos(){
+    public List<DadosPedidosPainelDto> listarPedidos(){
         List<Pedido> pedidos = this.retornarTodosPedidos();
-        return ordenaDadosPedidoDto(pedidos.stream().map(this::mapperDadosPedidoDto).collect(Collectors.toList()));
+        List<DadosPedidosPainelDto> dadosPedidosDtos = ordenaDadosPedidoDto(pedidos.stream().map(this::mapperDadosPedidoPainelDto).collect(Collectors.toList()));
+        return dadosPedidosDtos;
     }
 
-    private List<DadosPedidosDto>  ordenaDadosPedidoDto(List<DadosPedidosDto> listaInicial){
+    private List<DadosPedidosPainelDto>  ordenaDadosPedidoDto(List<DadosPedidosPainelDto> listaInicial){
 
-        List<DadosPedidosDto> lista = listaInicial.stream()
+        List<DadosPedidosPainelDto> lista = listaInicial.stream()
                 .filter(pedidos -> !pedidos.getStatus().equals(StatusPedido.FINALIZADO))
-                .sorted(Comparator.comparing(DadosPedidosDto::getDataPedido))
+                .sorted(Comparator.comparing(DadosPedidosPainelDto::getDataPedido))
                 .sorted((p1, p2) -> p2.getStatus().getValor() - p1.getStatus().getValor())
                 .collect(Collectors.toList());
 
@@ -82,7 +86,7 @@ public class PedidoService {
         return repository.findAll();
     }
     
-    private Pedido retornaPedido(Long id){
+    public Pedido retornaPedido(Long id){
 
         return repository.findById(id).orElseThrow();
     }
@@ -91,10 +95,10 @@ public class PedidoService {
         return pedidoProdutoService.retornaPedidoProduto(pedido.getIdPedido());
     }
 
-    public DadosPedidosDto atualizarPedido(Long id) throws Exception {
+    public DadosPedidosDto atualizarPedido(Long id, Boolean pagamentoRealizado) throws Exception {
         Pedido pedido = this.retornaPedido(id);
         if (pedido.getStatus().equals(StatusPedido.RECEBIDO)){
-            verificaPagamento();
+            verificaPagamento(pagamentoRealizado);
         }
         defineProximoStatus(pedido);
         return mapperDadosPedidoDto(pedido);
@@ -107,15 +111,67 @@ public class PedidoService {
             pedido.setStatus(StatusPedido.PRONTO);
         } else {
             pedido.setStatus(StatusPedido.FINALIZADO);
-            pedido.setDataFinalizado(new Date());
+            pedido.setDataFinalizado(Instant.now());
         }
     }
 
-    private void verificaPagamento() throws Exception {
+    private void verificaPagamento(Boolean pagamentoRealizado) throws Exception {
         // Fazer lógica para verificação de pagamento
-        if(true)
+        if(pagamentoRealizado)
             return;
         throw new Exception("Pagamento não identificado");
     }
 
+    public DadosPedidosDto recebePagamento(Long id) throws Exception {
+        Pedido pedido = this.retornaPedido(id);
+        DadosPedidosDto dadosPedidosDto = null;
+        if(pedido.getStatus().equals(StatusPedido.RECEBIDO)){
+            defineTempoEstimadoDePreparoPadrao(pedido);
+            dadosPedidosDto = this.atualizarPedido(id, true);
+        }
+        return dadosPedidosDto;
+    }
+
+    public DadosPedidosPainelDto defineTempoEspera(Pedido pedido, long tempoEspera){
+        Duration duracao = Duration.ofMinutes(tempoEspera);
+        pedido.setEstimativaPreparo(pedido.getDataPedido().plus(duracao));
+        return mapperDadosPedidoPainelDto(pedido);
+    }
+
+    private long retornaTempoPedido(Instant tempoInicio, Instant tempoEstimado){
+        Duration duracao = Duration.between(tempoInicio, tempoEstimado);
+        return duracao.toMinutes();
+    }
+
+    private DadosPedidosPainelDto mapperDadosPedidoPainelDto(Pedido pedido){
+        long tempoEspera = retornaTempoPedido(pedido.getDataPedido(), pedido.getEstimativaPreparo());
+        DadosPedidosDto dadosPedidosDto = mapperDadosPedidoDto(pedido);
+        return new DadosPedidosPainelDto(dadosPedidosDto, tempoEspera);
+    }
+
+    private void defineTempoEstimadoDePreparoPadrao(Pedido pedido){
+        long tempoPreparo = 0;
+        // Lanche >= 3und -> 25min | < 3 -> 15min
+        // Acompanhamento >= 3und -> 15min | < 3 -> 10min
+        // Sobremesa >= 3 -> 15min | < 3 -> 10min
+        int qtdLanches = retornaQuantidadeLista(pedido.getProdutos().stream().filter(pedidoProduto ->
+                pedidoProduto.getProduto().getCategoria().getNomeCategoria().equalsIgnoreCase("lanche"))
+                .collect(Collectors.toList()));
+        int qtdAcompanhamento = retornaQuantidadeLista(pedido.getProdutos().stream().filter(pedidoProduto ->
+                pedidoProduto.getProduto().getCategoria().getNomeCategoria().equalsIgnoreCase("acompanhamento"))
+                .collect(Collectors.toList()));
+        int qtdSobremesa = retornaQuantidadeLista(pedido.getProdutos().stream().filter(pedidoProduto ->
+                pedidoProduto.getProduto().getCategoria().getNomeCategoria().equalsIgnoreCase("sobremesa"))
+                .collect(Collectors.toList()));
+
+        tempoPreparo += qtdLanches >= 3 ? 25 : 15;
+        tempoPreparo += qtdAcompanhamento >= 3 ? 15 : 10;
+        tempoPreparo += qtdSobremesa >= 3 ? 15 : 10;
+
+        defineTempoEspera(pedido, tempoPreparo);
+    }
+
+    private int retornaQuantidadeLista(List<PedidoProduto> pedidoProdutos){
+        return pedidoProdutos.stream().mapToInt(PedidoProduto::getQuantidade).sum();
+    }
 }
