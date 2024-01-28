@@ -31,7 +31,8 @@ public class CategoriaService {
 
     public DadosCategoriaDto cadastrarCategoria(CategoriaDtoEntrada dto) {
         for (Categoria categoria : recuperaCategoriasVigentes(recuperaCategorias())) {
-            if (categoria.getNomeCategoria().equals(dto.nomeCategoria()))
+            if (categoria.getNomeCategoria().equals(dto.nomeCategoria()) &&
+            categoria.getDeletadoEm() == null)
                 return null;
         }
         Categoria categoriaSalva = repository.save(new Categoria(dto.nomeCategoria()));

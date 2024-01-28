@@ -6,6 +6,7 @@ import com.fiap58.pedidos.presenters.dto.entrada.ProdutoCarrinho;
 import com.fiap58.pedidos.core.domain.entity.*;
 import com.fiap58.pedidos.gateway.PedidoRepository;
 import com.fiap58.pedidos.presenters.dto.saida.DadosPedidosPainelDto;
+import com.fiap58.pedidos.presenters.dto.saida.DadosPedidosValorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -144,7 +145,10 @@ public class PedidoService {
     }
 
     private DadosPedidosPainelDto mapperDadosPedidoPainelDto(Pedido pedido){
-        long tempoEspera = retornaTempoPedido(pedido.getDataPedido(), pedido.getEstimativaPreparo());
+        long tempoEspera = 0;
+        if(pedido.getEstimativaPreparo() != null){
+            tempoEspera = retornaTempoPedido(pedido.getDataPedido(), pedido.getEstimativaPreparo());
+        }
         DadosPedidosDto dadosPedidosDto = mapperDadosPedidoDto(pedido);
         return new DadosPedidosPainelDto(dadosPedidosDto, tempoEspera);
     }
@@ -173,5 +177,17 @@ public class PedidoService {
 
     private int retornaQuantidadeLista(List<PedidoProduto> pedidoProdutos){
         return pedidoProdutos.stream().mapToInt(PedidoProduto::getQuantidade).sum();
+    }
+
+    private DadosPedidosValorDto mapperDadosPedidoValor(Pedido pedido){
+        List<PedidoProduto> pedidoProdutos = this.retornaTabelaJuncao(pedido);
+        List<PedidoProduto> produtosDoPedido = pedidoProdutos.stream()
+                .filter(pedidoProduto -> pedidoProduto.getPedido().getIdPedido() == pedido.getIdPedido())
+                .collect(Collectors.toList());
+        return new DadosPedidosValorDto(pedido, produtosDoPedido);
+    }
+
+    public DadosPedidosValorDto buscaPedido(Long id) {
+        return mapperDadosPedidoValor(retornaPedido(id));
     }
 }

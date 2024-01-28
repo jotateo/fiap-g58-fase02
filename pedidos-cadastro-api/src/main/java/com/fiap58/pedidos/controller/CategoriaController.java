@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("categoria")
+@RequestMapping("/categoria")
 public class CategoriaController {
 
     @Autowired
@@ -37,7 +37,7 @@ public class CategoriaController {
     }
 
     @Operation(description = "Excluir categoria")
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     @Transactional
     public void deletarCategoria(@PathVariable Long id){
         service.deletarCategoria(id);
