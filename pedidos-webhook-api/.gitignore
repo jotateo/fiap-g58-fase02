@@ -2,11 +2,10 @@
 venv
 .idea
 __pycache__
-.mvn
 
 
 ##
 docker/.env
 data.txt
 db_pass.txt
-.
+app_secret_key.txt
