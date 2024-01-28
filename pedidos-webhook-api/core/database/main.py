@@ -7,10 +7,10 @@ DB_USER = getenv('POSTGRES_USER', 'webhook-api')
 DB_PASSWD = getenv('POSTGRES_PASSWORD', 'webhook-api')
 DB_SCHEMA = getenv('POSTGRES_DB', 'webhook-api')
 DB_HOST = getenv('DB_HOST', 'localhost') # webhook-db
-DB_PORT = getenv('DB_PORT', '5432')
+DB_PORT = getenv('DB_PORT', '5447')
 
 # engine = create_engine('postgres://%s:%s@%s:%s/%s' % (DB_USER, DB_PASSWD, DB_HOST, DB_PORT, DB_SCHEMA))
-engine = create_engine(f'postgres://{DB_USER}:{DB_PASSWD}@{DB_HOST}:{DB_PORT}/{DB_SCHEMA}')
+engine = create_engine(f'postgresql://{DB_USER}:{DB_PASSWD}@{DB_HOST}:{DB_PORT}/{DB_SCHEMA}')
 
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,

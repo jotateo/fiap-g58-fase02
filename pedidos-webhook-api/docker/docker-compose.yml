@@ -7,16 +7,32 @@ services:
     ports:
       - "5447:5432"
     environment:
+      TZ: America/Sao_Paulo
+      PGTZ: America/Sao_Paulo
       POSTGRES_USER: webhook-api
       POSTGRES_PASSWORD: /run/secrets/db_pass
       POSTGRES_DB: webhook-api
-      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+      POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - api-net
     secrets:
       - db_pass
+
+  pgadmin:
+    image: elestio/pgadmin:latest
+    restart: always
+    ports:
+      - 5333:8080
+    environment:
+      PGADMIN_LISTEN_PORT: 8080
+      PGADMIN_DEFAULT_EMAIL: admin@teste.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    networks:
+      - api-net
+
 
   webhook-api:
     build: ..

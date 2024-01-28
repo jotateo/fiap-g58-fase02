@@ -1,15 +1,17 @@
-# import datetime
+import datetime
 
 from flask import Flask, jsonify, request
 from os import getenv
 
-# from core.models import payments
+from core.models import payments
 from core.models import orders
 from core.database import main as db
 
 app = Flask(__name__)
 app.secret_key = getenv('APP_SECRET_KEY', 'testeXXX')
-FLAG_DEBUG = getenv('FLAG_DEBUG', False)
+FLAG_DEBUG = getenv('FLAG_DEBUG', True)
+
+
 
 def build_results(payment):
     response = []
@@ -22,9 +24,18 @@ def build_results(payment):
 def whorder():
     request_json = request.get_json(force=True)
     print(f'REQUEST JSON: {request_json}')
+    print(f'request_json["order_id"] = {request_json["order_id"]}')
+    print(f'request_json["order_qtd"] = {request_json["order_qtd"]}')
+    print(f'request_json["order_value"] = {request_json["order_value"]}')
+
 
     ## Ao criar o pedido o webhook sera chamado para registrar este na base
-    order = orders(order_id=request_json["order_id"], order_qtd=request_json["order_qtd"])
+    order = orders.Orders(
+        order_id=request_json["order_id"],
+        order_qtd=request_json["order_qtd"],
+        order_value=request_json["order_value"],
+        date_created=datetime.datetime.now()
+    )
     db.db_session.add(order)
     db.db_session.commit()
     response = {"status": 200, "return": f'{request_json}'}

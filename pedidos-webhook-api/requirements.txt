@@ -1,5 +1,8 @@
 requests
 Flask
+Flask-Migrate
+Flask-SQLAlchemy
+flask_wtf
 SQLAlchemy
 psycopg2-binary
 psycopg2

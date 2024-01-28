@@ -1,10 +1,9 @@
-from core.database import main as Base
-from sqlalchemy import Table, Column, Integer, String, Text
+from core.database import main as db
+from sqlalchemy import Column, Integer, String, Float
 from sqlalchemy.types import DateTime
-from sqlalchemy.dialects.postgresql import array
 
 
-class Payments(Base):
+class Payments(db.Base):
     """
     WH Payments table
     """

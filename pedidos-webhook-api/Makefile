@@ -4,6 +4,9 @@ PROJECT := $(THISDIR)
 up: down
 	docker compose -f docker/docker-compose.yml up --force-recreate --build -d
 
+updb:
+	docker compose -f docker/docker-compose.yml up webhook-db --force-recreate -d
+
 down:
 	docker compose -f docker/docker-compose.yml down --remove-orphans
 
