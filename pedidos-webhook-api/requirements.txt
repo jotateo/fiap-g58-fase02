@@ -4,8 +4,7 @@ Flask-Migrate
 Flask-SQLAlchemy
 flask_wtf
 SQLAlchemy
-psycopg2-binary
-psycopg2
+mysql-connector
 async-timeout
 certifi
 charset-normalizer

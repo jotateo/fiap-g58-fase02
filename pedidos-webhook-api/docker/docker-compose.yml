@@ -2,37 +2,36 @@ version: "3.8"
 services:
   webhook-db:
     container_name: webhook-db
-    image: postgres:15-alpine
+    image: mysql:8
     restart: always
+    command: --default-authentication-plugin=mysql_native_password
     ports:
-      - "5447:5432"
+      - "33061:3306"
+      - "33060:33060"
     environment:
       TZ: America/Sao_Paulo
-      PGTZ: America/Sao_Paulo
-      POSTGRES_USER: webhook-api
-      POSTGRES_PASSWORD: /run/secrets/db_pass
-      POSTGRES_DB: webhook-api
-      POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
-      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      MYSQL_DATABASE: webhook-api
+      MYSQL_ROOT_PASSWORD: /run/secrets/db_pass
+#      MYSQL_USER: webhook-api
+#      MYSQL_PASSWORD: /run/secrets/db_pass
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
     networks:
       - api-net
     secrets:
       - db_pass
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
 
-  pgadmin:
-    image: elestio/pgadmin:latest
+  webhook-db-admin:
+    image: adminer
     restart: always
     ports:
-      - 5333:8080
-    environment:
-      PGADMIN_LISTEN_PORT: 8080
-      PGADMIN_DEFAULT_EMAIL: admin@teste.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      - 33090:8080
     networks:
       - api-net
-
 
   webhook-api:
     build: ..
@@ -42,10 +41,17 @@ services:
     environment:
       FLAG_DEBUG: True
       APP_SECRET_KEY: /run/secrets/app_secret_key
+      CREATE_ENGINE_ECHO: True
+      DB_USER: 'webhook-api'
+      DB_PASSWD: /run/secrets/db_pass
+      DB_SCHEMA: 'webhook-api'
+      DB_HOST: webhook-db
+      DB_PORT: '33061'
     networks:
       - api-net
     secrets:
       - app_secret_key
+      - db_pass
 
 networks:
   api-net:
@@ -58,4 +64,4 @@ secrets:
     file: app_secret_key.txt
 
 volumes:
-  postgres_data: {}
+  mysql_data: {}

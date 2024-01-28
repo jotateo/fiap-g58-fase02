@@ -18,7 +18,12 @@ DB_PORT = getenv('DB_PORT', '33061')
 
 CREATE_ENGINE_ECHO = getenv('CREATE_ENGINE_ECHO', True)
 
-engine = create_engine(f'mysql+pymysql://{DB_USER}:{DB_PASSWD}@{DB_HOST}:{DB_PORT}/{DB_SCHEMA}', echo=CREATE_ENGINE_ECHO)
+# engine = create_engine('postgres://%s:%s@%s:%s/%s' % (DB_USER, DB_PASSWD, DB_HOST, DB_PORT, DB_SCHEMA))
+# engine = create_engine(f'postgresql://{DB_USER}:{DB_PASSWD}@{DB_HOST}:{DB_PORT}/{DB_SCHEMA}')
+engine = create_engine(f'mysql+mysqlconnector://{DB_USER}:{DB_PASSWD}@{DB_HOST}:{DB_PORT}/{DB_SCHEMA}', echo=CREATE_ENGINE_ECHO)
+
+# with engine.connect() as connection:
+#     connection.execute(f'SELECT NOW();')
 
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
@@ -26,6 +31,13 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 
 Base = declarative_base()
 Base.query = db_session.query_property()
+
+# `insert=True` will ensure this is the very first listener to run
+@event.listens_for(engine, "connect", insert=True)
+def connect(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("SET sql_mode = 'STRICT_ALL_TABLES'")
+conn = engine.connect()
 
 def init_db():
     # import all modules here that might define models so that
