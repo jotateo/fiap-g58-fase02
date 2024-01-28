@@ -5,3 +5,9 @@
 
 ## Endpoints
 **[POST] http://<...>:5000/whqrcode**
+
+## OBS
+- para instalar o *psycopg2* no ubuntu: 
+```
+sudo apt install libpq-dev*
+```

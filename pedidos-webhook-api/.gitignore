@@ -4,5 +4,7 @@ venv
 __pycache__
 
 ##
+docker/.env
 data.txt
 db_pass.txt
+app_secret_key.txt
