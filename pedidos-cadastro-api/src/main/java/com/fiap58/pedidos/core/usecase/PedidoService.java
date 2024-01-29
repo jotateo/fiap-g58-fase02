@@ -1,5 +1,6 @@
 package com.fiap58.pedidos.core.usecase;
 
+import com.fiap58.pedidos.gateway.impl.ImplConsumerApiPagamentos;
 import com.fiap58.pedidos.presenters.dto.saida.DadosPedidosDto;
 import com.fiap58.pedidos.presenters.dto.entrada.DadosPedidosEntrada;
 import com.fiap58.pedidos.presenters.dto.entrada.ProdutoCarrinho;
@@ -30,6 +31,9 @@ public class PedidoService {
     @Autowired
     private pedidoProdutoService pedidoProdutoService;
 
+    @Autowired
+    private ImplConsumerApiPagamentos consumerApiPagamentos;
+
 
     public DadosPedidosDto inserirPedidoFila(DadosPedidosEntrada dto) {
         Cliente cliente;
@@ -41,6 +45,7 @@ public class PedidoService {
         Pedido pedido = new Pedido(null, cliente);
         Pedido pedidoCriado = repository.save(pedido);
         List<PedidoProduto> pedidosProdutos = processaCarrinhoPedido(dto.carrinho(), pedidoCriado);
+        consumerApiPagamentos.acionaCriarPagamento(pedido.getIdPedido());
         return new DadosPedidosDto(pedido, pedidosProdutos);
     }
 
