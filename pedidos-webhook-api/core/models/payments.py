@@ -16,10 +16,12 @@ class Payments(db.Base):
     api_version = Column(String(256))
     action = Column(String(256))
     date_created = Column(DateTime, server_default=func.now())
+    qr_code = Column(String(512))
 
-    def __init__(self, payment_id, type, user_id, api_version, action):
+    def __init__(self, payment_id, type, user_id, api_version, action, qr_code):
         self.payment_id = payment_id
         self.type = type
         self.user_id = user_id
         self.api_version = api_version
         self.action = action
+        self.qr_code = qr_code

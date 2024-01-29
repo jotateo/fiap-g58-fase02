@@ -20,6 +20,7 @@ services:
       DB_NAME: 'webhook-api'
       DB_HOST: webhook-db
       DB_PORT: '3306'
+      PAGAMENTO_CONFIRMA_URL: 'http://localhost:5000/gerenciamento-pagamento/pagamento/confirma/'
     networks:
       - webhook-api-net
       - webhook-api-ext-db-net

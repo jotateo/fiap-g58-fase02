@@ -1,3 +1,4 @@
+import requests
 from flask import Flask, jsonify, request
 from os import getenv
 
@@ -9,6 +10,8 @@ app = Flask(__name__)
 
 app.secret_key = getenv('APP_SECRET_KEY', 'testeXXX')
 FLAG_DEBUG = getenv('FLAG_DEBUG', True)
+PAGAMENTO_CONFIRMA_URL = getenv('PAGAMENTO_CONFIRMA_URL',
+                                'http://pagamento-api.g58food.corp/gerenciamento-pagamento/pagamento/confirma/')
 
 
 @app.route("/whorder", methods=["POST"])
@@ -43,20 +46,27 @@ def whpay():
     print(f'request_json["user_id"] = {request_json["user_id"]}')
     print(f'request_json["api_version"] = {request_json["api_version"]}')
     print(f'request_json["action"] = {request_json["action"]}')
+    print(f'request_json["qr_code"] = {request_json["qr_code"]}')
 
     payment = payments.Payments(
         payment_id=request_json["payment_id"],
         type=request_json["type"],
         user_id=request_json["user_id"],
         api_version=request_json["api_version"],
-        action=request_json["action"]
+        action=request_json["action"],
+        qr_code=request_json["qr_code"]
     )
 
     db.init_db()
     db.db_session.add(payment)
     db.db_session.commit()
 
-    response = {"status": 200, "return": f'{request_json}'}
+    ## Chamar api de pagamento para confirmar a transacao
+    resp = requests.post(PAGAMENTO_CONFIRMA_URL, params={
+        "qr_code": payment.qr_code
+    })
+
+    response = {"status": 200, "return": f'{request_json}', "confirm": f'{resp}'}
     return jsonify(response)
 
 
