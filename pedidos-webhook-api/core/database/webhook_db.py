@@ -7,9 +7,11 @@ DB_USER = getenv('DB_USER', 'webhook-api')
 DB_PASSWORD = getenv('DB_PASSWORD', 'webhook-api')
 DB_NAME = getenv('DB_NAME', 'webhook-api')
 DB_HOST = getenv('DB_HOST', 'localhost')  # webhook-db
-DB_PORT = getenv('DB_PORT', '5447')
+DB_PORT = getenv('DB_PORT', '33061')
 
-conn_string = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+CREATE_ENGINE_ECHO = getenv('CREATE_ENGINE_ECHO', True)
+
+conn_string = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 engine = create_engine(conn_string)
 
 db_session = scoped_session(sessionmaker(autocommit=False,

@@ -19,7 +19,7 @@ services:
       DB_PASSWORD: /run/secrets/db_pass
       DB_NAME: 'webhook-api'
       DB_HOST: webhook-db
-      DB_PORT: '5432'
+      DB_PORT: '3306'
     networks:
       - webhook-api-net
       - webhook-api-ext-db-net

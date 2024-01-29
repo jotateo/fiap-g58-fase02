@@ -1,23 +1,27 @@
 THISDIR := $(notdir $(CURDIR))
 PROJECT := $(THISDIR)
 
-up_api:
+api_up:
 	docker compose -f docker-compose-app.yml up --force-recreate --build -d
 
-up_db:
+db_up:
 	docker compose -f docker-compose-db.yml up --force-recreate -d
 
-down_api:
+api_down:
 	docker compose -f docker-compose-app.yml down --remove-orphans
 
-down_db:
+db_down:
 	docker compose -f docker-compose-db.yml down --remove-orphans
 
 prune-system:
 	docker system prune --force
 
-logs_api:
+api_logs:
 	docker compose -f docker-compose-app.yml logs -f
 
-logs_db:
+db_logs:
 	docker compose -f docker-compose-db.yml logs -f
+
+down-clean-vols:
+	docker compose -f docker-compose-db.yml down --remove-orphans -v && \
+	docker compose -f docker-compose-app.yml down --remove-orphans -v
