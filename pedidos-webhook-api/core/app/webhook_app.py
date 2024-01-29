@@ -26,6 +26,7 @@ def whorder():
         order_value=request_json["order_value"],
     )
 
+    db.init_db()
     db.db_session.add(order)
     db.db_session.commit()
 
@@ -51,6 +52,7 @@ def whpay():
         action=request_json["action"]
     )
 
+    db.init_db()
     db.db_session.add(payment)
     db.db_session.commit()
 
