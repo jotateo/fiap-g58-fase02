@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  webhook-api:
+    build: ./docker/Dockerfile
+    restart: always
+    ports:
+      - 5000:5000
+    environment:
+      FLAG_DEBUG: True
+      APP_SECRET_KEY: /run/secrets/app_secret_key
+      CREATE_ENGINE_ECHO: True
+      DB_USER: 'webhook-api'
+      DB_PASSWORD: /run/secrets/db_pass
+      DB_NAME: 'webhook-api'
+      DB_HOST: localhost
+      DB_PORT: '33061'
+    networks:
+      - webhook-api-net
+    secrets:
+      - app_secret_key
+
+networks:
+  webhook-api-net:
+    driver: bridge
+
+secrets:
+  db_pass:
+    file: db_pass.txt
+  app_secret_key:
+    file: app_secret_key.txt

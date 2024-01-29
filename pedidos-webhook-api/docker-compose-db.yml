@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+
+  webhook-db:
+    container_name: webhook-db
+    image: postgres:15-alpine
+    restart: always
+    ports:
+      - "5447:5432"
+    environment:
+      TZ: America/Sao_Paulo
+      PGTZ: America/Sao_Paulo
+      POSTGRES_USER: webhook-api
+      POSTGRES_PASSWORD: /run/secrets/db_pass
+      POSTGRES_DB: webhook-api
+      POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+    volumes:
+      - webhook-db-data:/var/lib/postgresql/data
+    networks:
+      - webhook-db-net
+    secrets:
+      - db_pass
+
+  webhook-db-admin:
+    image: adminer
+    restart: always
+    ports:
+      - 33090:8080
+    networks:
+      - webhook-db-net
+
+networks:
+  webhook-db-net:
+    driver: bridge
+
+secrets:
+  db_pass:
+    file: ./docker/db_pass.txt
+  app_secret_key:
+    file: ./docker/app_secret_key.txt
+
+volumes:
+  webhook-db-data: {}

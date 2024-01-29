@@ -1,4 +1,12 @@
 requests
-flask
-redis
-rq
+Flask
+Flask-Migrate
+Flask-SQLAlchemy
+flask_wtf
+SQLAlchemy
+psycopg2-binary
+psycopg2
+Jinja2
+python-dotenv
+python-ulid
+urllib3
