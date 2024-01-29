@@ -2,6 +2,7 @@ package com.fiap58.pedidos.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fiap58.pedidos.presenters.dto.entrada.TelefoneCadastro;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,4 +46,13 @@ public class Telefone {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant deletadoEm;
 
+    public Telefone() {
+    }
+
+    public Telefone(TelefoneCadastro telefoneCadastro) {
+        this.criadoEm = Instant.now();
+        this.ddd = telefoneCadastro.ddd();
+        this.numero = telefoneCadastro.numero();
+        this.tipo = telefoneCadastro.tipo();
+    }
 }

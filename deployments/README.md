@@ -1,0 +1,12 @@
+## Steps de criação dos serviços no Kubernetes Local
+- Crie um **config.json** com **docker login**. https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#log-in-to-docker-hub
+- Crie um secret do Kubernetes com o config.json (create_secret.txt). 
+- Crie as imagens do **pedidos-cadastro-api** e **pedidos-pagamento-api**: docker build -t .
+- Adicione tag nas imagens: docker tag image USER/repository:tag-imagem e push pro dockerhub
+- Substituia o caminho das imagens nos deployments
+- minikube start
+- kubectl apply -k .
+- Para acessar as aplicações:
+  - Encontre os serviços de cada app com load balancer: kubectl get svc
+  - Abra uma conexão pelo minikube: minikube service {service_name} --url
+- kubectl delete -k . para deletar os resources

@@ -1,0 +1,11 @@
+secretGenerator:
+- name: mysql-pass
+  literals:
+  - password=pipapaparapa
+resources:
+  - mysql-pedido-deployment.yaml
+  - app-pedido-deployment.yaml
+  - app-pedido-hpa.yaml
+  - mysql-pagamento-deployment.yaml
+  - app-pagamento-deployment.yaml
+  - app-pagamento-hpa.yaml
