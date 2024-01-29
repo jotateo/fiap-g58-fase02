@@ -3,14 +3,13 @@ package com.fiap58.pagamento.controller;
 
 import com.fiap58.pagamento.core.entity.Pagamento;
 import com.fiap58.pagamento.dto.DadosPedidoDto;
+import com.fiap58.pagamento.dto.QrCodeWhDto;
 import com.fiap58.pagamento.service.PagamentoService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/gerenciamento-pagamento")
@@ -28,9 +27,16 @@ public class PagamentoController {
     }
 
     @Operation(description = "Confirma pagamento e envia pedido para cozinha")
-    @PostMapping("/pagamento/confirma/{id}")
-    public ResponseEntity<DadosPedidoDto> confirmaPagamento(@PathVariable long id){
-        DadosPedidoDto pagamento = service.confirmaPagamento(id);
+    @PostMapping("/pagamento/confirma")
+    public ResponseEntity<DadosPedidoDto> confirmaPagamento(@RequestBody QrCodeWhDto dto){
+        DadosPedidoDto pagamento = service.confirmaPagamento(dto);
+        return ResponseEntity.ok(pagamento);
+    }
+
+    @Operation(description = "Lista pagamento a partir do Qr Code")
+    @PostMapping("/pagamento/listar")
+    public ResponseEntity<Pagamento> listarPagamento(@RequestBody QrCodeWhDto dto){
+        Pagamento pagamento = service.listaPagamentosPorQrCode(dto);
         return ResponseEntity.ok(pagamento);
     }
 }

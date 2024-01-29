@@ -30,8 +30,6 @@ public class PedidoController {
 
     @Operation(description = "Inicia Checkout")
     @PostMapping("/checkout")
-
-    @Transactional
     public ResponseEntity<Long> incluirPedido(@RequestBody @Valid DadosPedidosEntrada dto){
         DadosPedidosDto dadosPedidosDto = service.inserirPedidoFila(dto);
 

@@ -4,6 +4,7 @@ import com.fiap58.pagamento.core.entity.Pagamento;
 import com.fiap58.pagamento.dto.DadosPedidoDto;
 import com.fiap58.pagamento.dto.ProdutoCarrinhoSaida;
 import com.fiap58.pagamento.dto.QrCodeDto;
+import com.fiap58.pagamento.dto.QrCodeWhDto;
 import com.fiap58.pagamento.gateway.ConsumerApiMP;
 import com.fiap58.pagamento.gateway.PagamentoRepository;
 import com.fiap58.pagamento.gateway.impl.ConsumirPedidos;
@@ -56,8 +57,15 @@ public class PagamentoService {
         pagamento.setAtualizadoEm(Instant.now());
     }
 
-    public DadosPedidoDto confirmaPagamento(long id) {
-        DadosPedidoDto dadosPedidoDto = consumirPedidos.confirmaPagamento(id);
+    public Pagamento listaPagamentosPorQrCode(QrCodeWhDto qrCodeWhDto){
+        return repository.findByQrCode(qrCodeWhDto.qr_code());
+    };
+
+    public DadosPedidoDto confirmaPagamento(QrCodeWhDto qrCodeWhDto) {
+        Pagamento pagamento = listaPagamentosPorQrCode(qrCodeWhDto);
+
+
+        DadosPedidoDto dadosPedidoDto = consumirPedidos.confirmaPagamento(pagamento.getIdPedido());
         return dadosPedidoDto;
     }
 }
