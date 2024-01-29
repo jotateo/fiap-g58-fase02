@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = getenv('APP_SECRET_KEY', 'testeXXX')
 FLAG_DEBUG = getenv('FLAG_DEBUG', True)
 
-
+db.init_db()
 
 def build_results(payment):
     response = []

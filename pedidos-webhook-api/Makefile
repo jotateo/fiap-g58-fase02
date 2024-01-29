@@ -17,3 +17,6 @@ prune-system:
 logs:
 	docker compose -f docker/docker-compose.yml logs -f
 
+down-clean-vols:
+	docker compose -f docker/docker-compose.yml down --remove-orphans -v
+

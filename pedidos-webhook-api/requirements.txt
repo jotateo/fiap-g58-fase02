@@ -24,3 +24,5 @@ typing-extensions
 urllib3
 Werkzeug
 wrapt
+PyMySQL==1.1.0
+cryptography==38.0.4

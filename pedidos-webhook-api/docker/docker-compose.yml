@@ -7,10 +7,12 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "33061:3306"
-      - "33060:33060"
+      #- "33060:33060"
     environment:
       TZ: America/Sao_Paulo
       MYSQL_DATABASE: webhook-api
+      MYSQL_PASSWORD: /run/secrets/db_pass
+      MYSQL_USER: webhook-api
       MYSQL_ROOT_PASSWORD: /run/secrets/db_pass
 #      MYSQL_USER: webhook-api
 #      MYSQL_PASSWORD: /run/secrets/db_pass
@@ -41,12 +43,12 @@ services:
     environment:
       FLAG_DEBUG: True
       APP_SECRET_KEY: /run/secrets/app_secret_key
-      CREATE_ENGINE_ECHO: True
-      DB_USER: 'webhook-api'
+      #CREATE_ENGINE_ECHO: True
+      DB_USER: webhook-api
       DB_PASSWD: /run/secrets/db_pass
-      DB_SCHEMA: 'webhook-api'
+      DB_SCHEMA: webhook-api
       DB_HOST: webhook-db
-      DB_PORT: '33061'
+      DB_PORT: 3306
     networks:
       - api-net
     secrets:

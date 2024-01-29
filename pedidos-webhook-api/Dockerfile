@@ -7,7 +7,7 @@ RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev && \
 WORKDIR /app
 
 COPY ./main.py /app/
-COPY ./core/* /app/core/
+COPY ./core/ /app/core/
 COPY ./static/* /app/static/
 COPY ./templates/* /app/templates/
 COPY ./requirements.txt /app/

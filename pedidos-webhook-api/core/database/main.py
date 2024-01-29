@@ -11,7 +11,7 @@ from sqlalchemy.ext.declarative import declarative_base
 # DB_PORT = getenv('DB_PORT', '5447')
 ## mysql
 DB_USER = getenv('MYSQL_USER', 'webhook-api')
-DB_PASSWD = getenv('MYSQL_PASSWORD', 'webhook-api')
+DB_PASSWD = getenv('DB_PASSWD', 'webhook-api')
 DB_SCHEMA = getenv('MYSQL_DB', 'webhook-api')
 DB_HOST = getenv('DB_HOST', 'localhost') # webhook-db
 DB_PORT = getenv('DB_PORT', '33061')
