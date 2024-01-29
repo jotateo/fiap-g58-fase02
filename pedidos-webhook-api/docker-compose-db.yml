@@ -1,5 +1,6 @@
 version: "3.8"
 services:
+
   webhook-db:
     container_name: webhook-db
     image: mysql:8
@@ -15,9 +16,9 @@ services:
 #      MYSQL_USER: webhook-api
 #      MYSQL_PASSWORD: /run/secrets/db_pass
     volumes:
-      - mysql_data:/var/lib/mysql
+      - webhook-db-data:/var/lib/mysql
     networks:
-      - api-net
+      - webhook-db-net
     secrets:
       - db_pass
     healthcheck:
@@ -31,37 +32,17 @@ services:
     ports:
       - 33090:8080
     networks:
-      - api-net
-
-  webhook-api:
-    build: ..
-    restart: always
-    ports:
-      - 5000:5000
-    environment:
-      FLAG_DEBUG: True
-      APP_SECRET_KEY: /run/secrets/app_secret_key
-      CREATE_ENGINE_ECHO: True
-      DB_USER: 'webhook-api'
-      DB_PASSWD: /run/secrets/db_pass
-      DB_SCHEMA: 'webhook-api'
-      DB_HOST: webhook-db
-      DB_PORT: '33061'
-    networks:
-      - api-net
-    secrets:
-      - app_secret_key
-      - db_pass
+      - webhook-db-net
 
 networks:
-  api-net:
+  webhook-db-net:
     driver: bridge
 
 secrets:
   db_pass:
-    file: db_pass.txt
+    file: ./docker/db_pass.txt
   app_secret_key:
-    file: app_secret_key.txt
+    file: ./docker/app_secret_key.txt
 
 volumes:
-  mysql_data: {}
+  webhook-db-data: {}

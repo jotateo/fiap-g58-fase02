@@ -1,19 +1,24 @@
 THISDIR := $(notdir $(CURDIR))
 PROJECT := $(THISDIR)
 
-up: down
-	docker compose -f docker/docker-compose.yml up --force-recreate --build -d
+up_api:
+	docker compose -f docker-compose-app.yml up --force-recreate --build -d
 
-updb:
-	docker compose -f docker/docker-compose.yml up webhook-db --force-recreate -d && \
-	docker compose -f docker/docker-compose.yml up webhook-db-admin --force-recreate -d
+up_db:
+	docker compose -f docker-compose-db.yml up webhook-db --force-recreate -d && \
+	docker compose -f docker-compose-db.yml up webhook-db-admin --force-recreate -d
 
-down:
-	docker compose -f docker/docker-compose.yml down --remove-orphans
+down_api:
+	docker compose -f docker-compose-app.yml down --remove-orphans
+
+down_db:
+	docker compose -f docker-compose-db.yml down --remove-orphans
 
 prune-system:
 	docker system prune --force
 
-logs:
-	docker compose -f docker/docker-compose.yml logs -f
+logs_api:
+	docker compose -f docker-compose-app.yml logs -f
 
+logs_db:
+	docker compose -f docker-compose-db.yml logs -f

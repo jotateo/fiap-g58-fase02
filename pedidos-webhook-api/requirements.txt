@@ -3,8 +3,9 @@ Flask
 Flask-Migrate
 Flask-SQLAlchemy
 flask_wtf
+gunicorn
 SQLAlchemy
-mysql-connector
+mysql-connector-python
 async-timeout
 certifi
 charset-normalizer
