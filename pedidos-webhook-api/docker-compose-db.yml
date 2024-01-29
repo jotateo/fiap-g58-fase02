@@ -3,8 +3,12 @@ services:
 
   webhook-db:
     container_name: webhook-db
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     restart: always
+    logging:
+      options:
+        max-size: 30m
+        max-file: "3"
     ports:
       - "5447:5432"
     environment:
@@ -13,8 +17,7 @@ services:
       POSTGRES_USER: webhook-api
       POSTGRES_PASSWORD: /run/secrets/db_pass
       POSTGRES_DB: webhook-api
-      POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
-      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: '--auth-host=trust --auth-local=trust'
     volumes:
       - webhook-db-data:/var/lib/postgresql/data
     networks:
@@ -25,6 +28,10 @@ services:
   webhook-db-admin:
     image: adminer
     restart: always
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
     ports:
       - 33090:8080
     networks:
