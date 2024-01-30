@@ -1,0 +1,800 @@
+{
+	"info": {
+		"_postman_id": "a77624bb-27bd-4937-8383-a7992a7ff367",
+		"name": "Fiap-Grupo58-Fase02",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "Pedidos-Checkout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"carrinho\": [\r\n        {\r\n            \"idProduto\": 1,\r\n            \"nome\": \"X-BACON\",\r\n            \"quantidade\": 1,\r\n            \"observacao\": \"\"\r\n        }\r\n    ],\r\n    \"clienteId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-pedidos}}/pedidos/checkout",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"pedidos",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedidos - Listar",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"carrinho\": [\r\n        {\r\n            \"idProduto\": 1,\r\n            \"nome\": \"X-BURGUER\",\r\n            \"quantidade\": 2,\r\n            \"observacao\": \"\"\r\n        }\r\n    ],\r\n    \"clienteId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-pedidos}}/pedidos",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recebe aprovação de pagamento e pedido é transferido para cozinha",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"carrinho\": [\r\n        {\r\n            \"idProduto\": 1,\r\n            \"nome\": \"X-BURGUER\",\r\n            \"quantidade\": 2,\r\n            \"observacao\": \"\"\r\n        }\r\n    ],\r\n    \"clienteId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-pedidos}}/pedidos/confirmacao-pagamento/3",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"pedidos",
+								"confirmacao-pagamento",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista pedido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-pedidos}}/pedidos/2",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"pedidos",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produtos",
+			"item": [
+				{
+					"name": "Lista todos os produtos disponíveis",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-pedidos}}/produto/list",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"produto",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca produto por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-pedidos}}/produto/1",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"produto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Faz a inclusão de um novo produto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"idCategoria\":2,\r\n    \"nome\":\"Banoffee \",\r\n    \"descricao\":\"Torta de banana\",\r\n    \"precoAtual\":10.60\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-pedidos}}/produto",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"produto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleta um produto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-pedidos}}/produto/2",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"produto",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca produtos de uma determinada categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-pedidos}}/produto/buscaPorCat/lanche",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"produto",
+								"buscaPorCat",
+								"lanche"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca produtos de uma determinada categoria Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-pedidos}}/produto/buscaPorCat/sobremesa",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"produto",
+								"buscaPorCat",
+								"sobremesa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualiza produto",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"Banoffee \",\r\n    \"descricao\":\"Torta de banana\",\r\n    \"categoria\":\"sobremesa\",\r\n    \"precoAtual\":11.60\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-pedidos}}/produto/3",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"produto",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Lista todos os clientes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"carrinho\": [\r\n        {\r\n            \"idProduto\": 1,\r\n            \"nome\": \"X-BURGUER\",\r\n            \"quantidade\": 2,\r\n            \"observacao\": \"\"\r\n        }\r\n    ],\r\n    \"clienteId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cliente/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cliente",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Faz a inserção de um novo cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"25847968599\",\r\n    \"nome\": \"Grupo 58\",\r\n    \"enderecos\": [\r\n        {\r\n            \"rua\": \"Rua AAAAA\",\r\n            \"numero\": \"58\",\r\n            \"cidade\": \"São Paulo\",\r\n            \"estado\": \"SP\",\r\n            \"complemento\": \"Casa de esquina\"\r\n        }\r\n    ],\r\n    \"telefones\": [\r\n        {\r\n            \"ddd\": \"11\",\r\n            \"numero\": \"15487454\",\r\n            \"tipo\":\"Comercial\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cliente/inserir",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cliente",
+								"inserir"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Faz a inserção de cliente existente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"25847968599\",\r\n    \"nome\": \"XXXXXXXXXXXX\",\r\n    \"enderecos\": [\r\n        {\r\n            \"rua\": \"Rua XXXXXXXXXXX\",\r\n            \"numero\": \"58\",\r\n            \"cidade\": \"São Paulo\",\r\n            \"estado\": \"SP\",\r\n            \"complemento\": \"Casa de esquina\"\r\n        }\r\n    ],\r\n    \"telefones\": [\r\n        {\r\n            \"ddd\": \"11\",\r\n            \"numero\": \"11111111111\",\r\n            \"tipo\":\"Comercial\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cliente/inserir",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cliente",
+								"inserir"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca um cliente por Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"carrinho\": [\r\n        {\r\n            \"idProduto\": 1,\r\n            \"nome\": \"X-BURGUER\",\r\n            \"quantidade\": 2,\r\n            \"observacao\": \"\"\r\n        }\r\n    ],\r\n    \"clienteId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cliente/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cliente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca um cliente por CPF",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"carrinho\": [\r\n        {\r\n            \"idProduto\": 1,\r\n            \"nome\": \"X-BURGUER\",\r\n            \"quantidade\": 2,\r\n            \"observacao\": \"\"\r\n        }\r\n    ],\r\n    \"clienteId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cliente/cpf/12345678900",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cliente",
+								"cpf",
+								"12345678900"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categoria",
+			"item": [
+				{
+					"name": "Busca categoria por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-pedidos}}/categoria/1",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"categoria",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastra nova categoria",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nomeCategoria\":\"Sobremesa\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-pedidos}}/categoria",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"categoria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir categoria",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-pedidos}}/categoria/2",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"categoria",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PainelAdm",
+			"item": [
+				{
+					"name": "Define tempo de espera pedido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tempoEspera\":40\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-pedidos}}/adm/define-tempo-espera/2",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"adm",
+								"define-tempo-espera",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pedidos - Alterar Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{api-pedidos}}/adm/atualizar/2",
+							"host": [
+								"{{api-pedidos}}"
+							],
+							"path": [
+								"adm",
+								"atualizar",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "pagamentos",
+			"item": [
+				{
+					"name": "Cadastro Loja",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer TEST-6367506296567050-012618-3399e405dfebefc329dfc523a63d2f91-483146344"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"business_hours\": {\n    \"monday\": [\n      {\n        \"open\": \"08:00\",\n        \"close\": \"18:00\"\n      }\n    ],\n    \"tuesday\": [\n      {\n        \"open\": \"09:00\",\n        \"close\": \"18:00\"\n      }\n    ]\n  },\n  \"external_id\": \"FIAP58\",\n  \"location\": {\n    \"street_number\": \"3039\",\n    \"street_name\": \"Rua Ângelo Piva\",\n    \"city_name\": \"Osasco\",\n    \"state_name\": \"São Paulo\",\n    \"latitude\": -23.36,\n    \"longitude\": -46.84,\n    \"reference\": \"Melicidade\"\n  },\n  \"name\": \"Grupo 58\"\n}"
+						},
+						"url": {
+							"raw": "https://api.mercadopago.com/users/483146344/stores",
+							"protocol": "https",
+							"host": [
+								"api",
+								"mercadopago",
+								"com"
+							],
+							"path": [
+								"users",
+								"483146344",
+								"stores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Loja",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer TEST-6367506296567050-012618-3399e405dfebefc329dfc523a63d2f91-483146344"
+							}
+						],
+						"url": {
+							"raw": "https://api.mercadopago.com/stores/59329989",
+							"protocol": "https",
+							"host": [
+								"api",
+								"mercadopago",
+								"com"
+							],
+							"path": [
+								"stores",
+								"59329989"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Caixa",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer TEST-6367506296567050-012618-3399e405dfebefc329dfc523a63d2f91-483146344"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"category\": 5611203,\n  \"external_id\": 58,\n  \"store_id\": \"59329989\",\n  \"fixed_amount\": false,\n  \"name\": \"First POS\"\n}"
+						},
+						"url": {
+							"raw": "https://api.mercadopago.com/pos",
+							"protocol": "https",
+							"host": [
+								"api",
+								"mercadopago",
+								"com"
+							],
+							"path": [
+								"pos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gerar QrCode",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer TEST-6367506296567050-012618-3399e405dfebefc329dfc523a63d2f91-483146344"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Pedido\",\n  \"external_reference\": \"2\",\n  \"items\": [\n    {\n      \"title\": \"Point Mini\",\n      \"unit_price\": 10,\n      \"quantity\": 1,\n      \"unit_measure\": \"unit\",\n      \"total_amount\": 10\n    }\n  ],\n  \"notification_url\": \"https://www.yourserver.com/notifications\",\n  \"title\": \"Product order\",\n  \"total_amount\": 10\n}"
+						},
+						"url": {
+							"raw": "https://api.mercadopago.com/instore/orders/qr/seller/collectors/483146344/pos/58/qrs",
+							"protocol": "https",
+							"host": [
+								"api",
+								"mercadopago",
+								"com"
+							],
+							"path": [
+								"instore",
+								"orders",
+								"qr",
+								"seller",
+								"collectors",
+								"483146344",
+								"pos",
+								"58",
+								"qrs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Api-Pagamentos",
+			"item": [
+				{
+					"name": "Listar pagamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"qr_code\": \"00020101021243650016COM.MERCADOLIBRE020130636753946a1-6d53-4066-91ce-4a43d64422975204000053039865802BR5913Luciano Lessa6009SAO PAULO62070503***63046E10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-pagamentos}}/gerenciamento-pagamento/pagamento/listar",
+							"host": [
+								"{{api-pagamentos}}"
+							],
+							"path": [
+								"gerenciamento-pagamento",
+								"pagamento",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cria Pagamento Pedido Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{api-pagamentos}}/gerenciamento-pagamento/criar-pagamento/pedido/5",
+							"host": [
+								"{{api-pagamentos}}"
+							],
+							"path": [
+								"gerenciamento-pagamento",
+								"criar-pagamento",
+								"pedido",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Confirma Pagamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"qr_code\": \"00020101021243650016COM.MERCADOLIBRE020130636753946a1-6d53-4066-91ce-4a43d64422975204000053039865802BR5913Luciano Lessa6009SAO PAULO62070503***63046E10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-pagamentos}}/gerenciamento-pagamento/pagamento/confirma",
+							"host": [
+								"{{api-pagamentos}}"
+							],
+							"path": [
+								"gerenciamento-pagamento",
+								"pagamento",
+								"confirma"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api-pedidos",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "api-pagamentos",
+			"value": "http://localhost:8081"
+		}
+	]
+}
