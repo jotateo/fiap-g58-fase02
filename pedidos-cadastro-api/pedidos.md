@@ -8,3 +8,6 @@ A Documentação dos endpoints foi realizada usando
 **OpenApi 3.0**. Dessa forma, os endpoints, seus parâmetros e
 descrições estão disponíveis em **http://localhost:8080/swagger-ui/index.html**.
 
+
+## Arquitetura das apis
+![img.png](img.png)
