@@ -62,7 +62,7 @@ def whpay():
     db.db_session.commit()
 
     ## Chamar api de pagamento para confirmar a transacao
-    resp = requests.post(PAGAMENTO_CONFIRMA_URL, params={
+    resp = requests.post(PAGAMENTO_CONFIRMA_URL, json={
         "qr_code": payment.qr_code
     })
 

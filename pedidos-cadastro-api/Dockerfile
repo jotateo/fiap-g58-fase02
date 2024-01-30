@@ -2,6 +2,7 @@ FROM maven:3.8.5-openjdk-17
 
 WORKDIR /usr/src/pedidos
 COPY . .
+RUN ls
 RUN chmod +x app-startup.sh
 EXPOSE 8080
 ENTRYPOINT ["/bin/bash"]
