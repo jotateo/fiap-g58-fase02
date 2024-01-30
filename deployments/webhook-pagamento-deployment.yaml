@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webhook-pagamento
+  labels:
+    app: webhook-pagamento
+spec:
+  ports:
+    - port: 5000
+      targetPort: 5000
+  selector:
+    app: webhook-pagamento
+    tier: frontend
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-pagamento
+  labels:
+    app: webhook-pagamento
+spec:
+  selector:
+    matchLabels:
+      app: webhook-pagamento
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: webhook-pagamento
+        tier: frontend
+    spec:
+      containers:
+        - name: webhook-pagamento
+          image: guilhermeldcunha/kubernetes:webhook-pagamentos
+          imagePullPolicy: Always
+          env:
+            - name: DB_NAME
+              value: webhook-api
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+            - name: DB_USER
+              value: webhook-api
+            - name: DB_HOST
+              value: webhook-api
+            - name: DB_PORT
+              value: "3306"
+            - name: APP_SECRET_KEY
+              value: app_secret_key
+            - name: PAGAMENTO_CONFIRMA_URL
+              value: http://app-pagamento:8081/gerenciamento-pagamento/pagamento/confirma/
+
+          ports:
+            - containerPort: 8082
+              name: webhook
+          resources:
+            requests:
+              cpu: 600m
+      imagePullSecrets:
+        - name: regcred
+

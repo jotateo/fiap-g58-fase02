@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-pedido
+  labels:
+    app: app-pedido
+spec:
+  #type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      #nodePort: 30008
+  selector:
+    app: app-pedido
+    tier: frontend
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-pedido
+  labels:
+    app: app-pedido
+spec:
+  selector:
+    matchLabels:
+      app: app-pedido
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: app-pedido
+        tier: frontend
+    spec:
+      containers:
+      - name: app-pedido
+        image: guilhermeldcunha/kubernetes:app-pedidos
+        imagePullPolicy: Always
+        env:
+        - name: MYSQL_DATABASE
+          value: food_58
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+
+        ports:
+        - containerPort: 8080
+          name: app-pedido
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          mvn clean package
+          mvn spring-boot:run
+        resources:
+          requests:
+            cpu: 700m
+      imagePullSecrets:
+        - name: regcred
+
