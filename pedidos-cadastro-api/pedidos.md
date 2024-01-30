@@ -10,4 +10,4 @@ descrições estão disponíveis em **http://localhost:8080/swagger-ui/index.htm
 
 
 ## Arquitetura das apis
-![img.png](img.png)
+![img_1.png](img_1.png)
