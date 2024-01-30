@@ -36,8 +36,8 @@ spec:
     spec:
       containers:
       - name: app-pedido
-        image: guilhermeldcunha/kubernetes:app-pedidos
-        imagePullPolicy: Always
+        image: app-pedidos
+        imagePullPolicy: Never
         env:
         - name: MYSQL_DATABASE
           value: food_58
