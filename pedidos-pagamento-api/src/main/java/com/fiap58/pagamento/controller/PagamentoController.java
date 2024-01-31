@@ -3,6 +3,7 @@ package com.fiap58.pagamento.controller;
 
 import com.fiap58.pagamento.core.entity.Pagamento;
 import com.fiap58.pagamento.dto.DadosPedidoDto;
+import com.fiap58.pagamento.dto.QrCodeDto;
 import com.fiap58.pagamento.dto.QrCodeWhDto;
 import com.fiap58.pagamento.service.PagamentoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,5 +39,12 @@ public class PagamentoController {
     public ResponseEntity<Pagamento> listarPagamento(@RequestBody QrCodeWhDto dto){
         Pagamento pagamento = service.listaPagamentosPorQrCode(dto);
         return ResponseEntity.ok(pagamento);
+    }
+
+    @Operation(description = "Lista pagamento a partir do id do pedido")
+    @GetMapping("/pagamento/listar/{id}")
+    public ResponseEntity<QrCodeDto> listarPagamento(@PathVariable long id){
+        QrCodeDto qrCodeDto = service.listaPagamentosPorId(id);
+        return ResponseEntity.ok(qrCodeDto);
     }
 }
