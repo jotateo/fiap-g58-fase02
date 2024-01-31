@@ -46,6 +46,8 @@ spec:
             secretKeyRef:
               name: mysql-pass
               key: password
+        - name: pagamento_service
+          value: app-pagamento
 
         ports:
         - containerPort: 8080
