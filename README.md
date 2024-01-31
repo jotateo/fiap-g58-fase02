@@ -19,4 +19,4 @@ O serviço contido em **pedidos-webhook-api** é responsável
 por escutar qualquer confirmação de pagamento enviada pelo
 Mercado Pago e enviá-la ao serviço de pagamento.
 
-![Alt text](image.png)
+![Alt text](arch_overview.png)
