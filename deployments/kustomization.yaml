@@ -11,3 +11,4 @@ resources:
   - app-pagamento-hpa.yaml
   - mysql-webhook-deployment.yaml
   - webhook-pagamento-deployment.yaml
+  - webhook-pagamento-hpa.yaml

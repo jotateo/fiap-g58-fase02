@@ -36,8 +36,8 @@ spec:
     spec:
       containers:
       - name: app-pedido
-        image: guilhermeldcunha/kubernetes:app-pedidos
-        imagePullPolicy: Always
+        image: app-pedidos
+        imagePullPolicy: Never
         env:
         - name: MYSQL_DATABASE
           value: food_58
@@ -46,6 +46,8 @@ spec:
             secretKeyRef:
               name: mysql-pass
               key: password
+        - name: pagamento_service
+          value: app-pagamento
 
         ports:
         - containerPort: 8080

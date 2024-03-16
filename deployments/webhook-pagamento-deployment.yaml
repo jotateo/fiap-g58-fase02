@@ -34,8 +34,8 @@ spec:
     spec:
       containers:
         - name: webhook-pagamento
-          image: guilhermeldcunha/kubernetes:webhook-pagamentos
-          imagePullPolicy: Always
+          image: webhook-pagamento
+          imagePullPolicy: Never
           env:
             - name: DB_NAME
               value: webhook-api
@@ -53,7 +53,7 @@ spec:
             - name: APP_SECRET_KEY
               value: app_secret_key
             - name: PAGAMENTO_CONFIRMA_URL
-              value: http://app-pagamento:8081/gerenciamento-pagamento/pagamento/confirma/
+              value: http://app-pagamento:8081/gerenciamento-pagamento/pagamento/confirma
 
           ports:
             - containerPort: 8082

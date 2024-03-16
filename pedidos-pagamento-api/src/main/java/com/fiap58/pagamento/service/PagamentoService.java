@@ -68,4 +68,9 @@ public class PagamentoService {
         DadosPedidoDto dadosPedidoDto = consumirPedidos.confirmaPagamento(pagamento.getIdPedido());
         return dadosPedidoDto;
     }
+
+    public QrCodeDto listaPagamentosPorId(long idPedido) {
+        Pagamento pagamento = repository.findByIdPedido(idPedido);
+        return new QrCodeDto(pagamento.getInStoreOrderId(), pagamento.getQrCode());
+    }
 }

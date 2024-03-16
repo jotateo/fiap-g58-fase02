@@ -8,6 +8,10 @@ spec:
   ports:
     - port: 8081
       targetPort: 8081
+      name: port-default
+    - port: 8080
+      targetPort: 8081
+      name: port-fallback
   selector:
     app: app-pagamento
     tier: frontend
@@ -34,8 +38,8 @@ spec:
     spec:
       containers:
         - name: app-pagamento
-          image: guilhermeldcunha/kubernetes:app-pagamentos
-          imagePullPolicy: Always
+          image: app-pagamentos
+          imagePullPolicy: Never
           env:
             - name: MYSQL_DATABASE
               value: pagamento_58
