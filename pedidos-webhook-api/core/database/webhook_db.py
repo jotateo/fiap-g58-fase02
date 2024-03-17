@@ -1,5 +1,5 @@
 from os import getenv
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -11,8 +11,12 @@ DB_PORT = getenv('DB_PORT', '33061')
 
 CREATE_ENGINE_ECHO = getenv('CREATE_ENGINE_ECHO', True)
 
-conn_string = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+conn_string = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}'
 engine = create_engine(conn_string)
+with engine.connect() as conn:
+    conn.execute(text(f"CREATE DATABASE IF NOT EXISTS `{DB_NAME}`"))
+
+engine = create_engine(conn_string + f"/{DB_NAME}")
 
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
