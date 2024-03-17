@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: webhook-pagamento
-          image: 373830381913.dkr.ecr.us-east-1.amazonaws.com/fiap-pedidos:webhook-pagamento
+          image: ${{ secrets.ECR_URI }}:webhook-pagamento
           imagePullPolicy: Always
           env:
             - name: DB_NAME

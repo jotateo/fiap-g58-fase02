@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: app-pagamento
-          image: 373830381913.dkr.ecr.us-east-1.amazonaws.com/fiap-pedidos:app-pagamentos
+          image: ${{ secrets.ECR_URI }}:app-pagamentos
           imagePullPolicy: Always
           env:
             - name: MYSQL_DATABASE

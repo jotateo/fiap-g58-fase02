@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
       - name: app-pedido
-        image: 373830381913.dkr.ecr.us-east-1.amazonaws.com/fiap-pedidos:app-pedidos
+        image: ${{ secrets.ECR_URI }}:app-pedidos
         imagePullPolicy: Always
         env:
         - name: MYSQL_DATABASE
