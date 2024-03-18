@@ -15,7 +15,6 @@ spec:
   selector:
     app: app-pagamento
     tier: frontend
-  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -38,11 +37,13 @@ spec:
     spec:
       containers:
         - name: app-pagamento
-          image: app-pagamentos
-          imagePullPolicy: Never
+          image: ${{ secrets.ECR_URI }}:app-pagamentos
+          imagePullPolicy: Always
           env:
             - name: MYSQL_DATABASE
               value: pagamento_58
+            - name: MYSQL_HOST
+              value: ${{ secrets.DB_HOST }}
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -62,6 +63,6 @@ spec:
           resources:
             requests:
               cpu: 700m
-      imagePullSecrets:
-        - name: regcred
+      # imagePullSecrets:
+      #   - name: regcred
 

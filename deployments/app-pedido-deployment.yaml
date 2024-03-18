@@ -13,7 +13,6 @@ spec:
   selector:
     app: app-pedido
     tier: frontend
-  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -36,11 +35,13 @@ spec:
     spec:
       containers:
       - name: app-pedido
-        image: app-pedidos
-        imagePullPolicy: Never
+        image: ${{ secrets.ECR_URI }}:app-pedidos
+        imagePullPolicy: Always
         env:
         - name: MYSQL_DATABASE
           value: food_58
+        - name: MYSQL_HOST
+          value: ${{ secrets.DB_HOST }}
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -60,6 +61,6 @@ spec:
         resources:
           requests:
             cpu: 700m
-      imagePullSecrets:
-        - name: regcred
+      # imagePullSecrets:
+      #   - name: regcred
 
